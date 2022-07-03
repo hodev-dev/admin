@@ -191,7 +191,7 @@
                 >
                 <span
                     class="w-1/12 h-auto min-h-16 flex flex-wrap break-all text-xs p-2 items-center justify-center"
-                    >{{$phone->created_at}}</span
+                    >{{new Verta($phone->created_at)}}</span
                 >
                 <span
                     class="w-1/12 h-auto min-h-16 flex flex-wrap break-all text-xs p-2 items-center justify-center"
