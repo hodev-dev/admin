@@ -97,7 +97,7 @@
                 >
                 <span
                     class="w-1/6 h-16 flex items-center justify-center bg-white"
-                    >{{ $report->time }}</span
+                    >{{ new Verta($report->created_at) }}</span
                 >
             </div>
             @endforeach
