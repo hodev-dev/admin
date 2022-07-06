@@ -29,9 +29,9 @@ Route::get('/', function () {
 Route::get('/', function (Request $request) {
     $count = ($request->count) ? $request->count : 30;
     if ($request->filled('sys')) {
-        $sum = Phone::where('system', $request->sys)->whereDate('created_at', Carbon::today())->count();
-        $phones =  Phone::where('system', $request->sys)->whereDate('created_at', Carbon::today())->orderBy('id', 'desc')->take($count)->get();
-        $reports = Report::where('system', $request->sys)->whereDate('created_at', Carbon::today())->orderBy('id', 'desc')->take($count)->get();
+        $sum = Phone::where('system', $request->sys)->count();
+        $phones =  Phone::where('system', $request->sys)->orderBy('id', 'desc')->take($count)->get();
+        $reports = Report::where('system', $request->sys)->orderBy('id', 'desc')->take($count)->get();
     } else {
         $sum =  Phone::count();
         $phones =  Phone::whereDate('created_at',  Carbon::today()->toDateString())->take($count)->get();;

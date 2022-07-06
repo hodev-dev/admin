@@ -27,7 +27,7 @@ class PhoneExport implements WithMapping, WithHeadings, WithColumnFormatting, Fr
 
     public function collection()
     {
-        return Phone::where('system', $this->sys)->whereDate('created_at', Carbon::today())->orderBy('id', 'desc')->take($this->count)->get();
+        return Phone::where('system', $this->sys)->orderBy('id', 'desc')->take($this->count)->get();
     }
 
     public function headings(): array
