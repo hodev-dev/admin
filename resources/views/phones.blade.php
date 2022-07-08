@@ -5,6 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Divar</title>
         <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js"/>
+        <script
+             src="https://code.jquery.com/jquery-3.6.0.min.js"
+             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+             crossorigin="anonymous"></script>
+        <script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js"></script>
+        <script src="https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
     </head>
     <body class="bg-gray-50 w-full h-screen">
         <form
@@ -58,6 +65,7 @@
                 value="اکسل"
                 class="w-32 h-8 ml-5 text-white bg-green-700 flex items-center justify-center shadow rounded"
             />
+            <input name='date' type="text" class="date" />
         </form>
         <div class="flex flex-col items-center w-full bg-gray-100 h-auto">
             <div class="flex w-full bg-gray-100 border h-auto">
@@ -204,5 +212,10 @@
             </div>
             @endforeach
         </div>
+            <script type="text/javascript">
+                 $(document).ready(function() {
+                     $(".date").pDatepicker();
+                 });    
+            </script>
     </body>
 </html>
