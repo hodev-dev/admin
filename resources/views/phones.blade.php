@@ -4,15 +4,26 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Divar</title>
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/persian-datepicker@1.2.0/dist/css/persian-datepicker.min.css"
+        />
         <script src="https://cdn.tailwindcss.com"></script>
         <script
-             src="https://code.jquery.com/jquery-3.6.0.min.js"
-             integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-             crossorigin="anonymous"></script>
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"
+        ></script>
         <script src="https://unpkg.com/persian-date@1.1.0/dist/persian-date.min.js"></script>
         <script src="https://unpkg.com/persian-datepicker@1.2.0/dist/js/persian-datepicker.min.js"></script>
     </head>
     <body class="bg-gray-50 w-full h-screen">
+        <input
+            type="text"
+            value="{{ Verta::createTimestamp((int) $date)->format('%Y %m %d') }}"
+            class="date border w-96 ml-5 cursor-pointer p-2 text-center"
+        />
+        <span class="ml-5">{{ $sum }}</span>
         <form
             class="flex items-center w-full bg-white border h-16"
             action="{{ url('/') }}"
@@ -37,6 +48,11 @@
                 type="submit"
                 value="search"
                 class="w-32 h-8 ml-5 text-white bg-orange-700 flex items-center justify-center shadow rounded"
+            />
+            <input
+                name="date"
+                value="{{ $date }}"
+                class="date-observer border w-48 ml-5 cursor-pointer hidden"
             />
         </form>
         <form
@@ -64,7 +80,10 @@
                 value="اکسل"
                 class="w-32 h-8 ml-5 text-white bg-green-700 flex items-center justify-center shadow rounded"
             />
-            <input name='date' type="text" class="date" />
+            <input
+                name="date"
+                class="date-observer border w-48 ml-5 cursor-pointer hidden"
+            />
         </form>
         <div class="flex flex-col items-center w-full bg-gray-100 h-auto">
             <div class="flex w-full bg-gray-100 border h-auto">
@@ -211,10 +230,28 @@
             </div>
             @endforeach
         </div>
-            <script type="text/javascript">
-                 $(document).ready(function() {
-                     $(".date").pDatepicker();
-                 });    
-            </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                const dp = $(".date").pDatepicker({
+                    observer: true,
+                    calendar: {
+                        persian: {
+                            locale: "en",
+                            showHint: false,
+                            leapYearMode: "algorithmic",
+                        },
+                        gregorian: {
+                            locale: "en",
+                            showHint: false,
+                        },
+                    },
+                    altField: ".date-observer",
+                    format: "L",
+                    altFormat: "X",
+                    initialValue: false,
+                    initialValueType: "persian",
+                });
+            });
+        </script>
     </body>
 </html>

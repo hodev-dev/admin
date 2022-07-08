@@ -1,14 +1,15 @@
 <?php
 
-use App\Exports\PhoneExport;
+use Carbon\Carbon;
 use App\Models\Phone;
 use App\Models\Report;
+use App\Exports\PhoneExport;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 
 use function PHPUnit\Framework\isNull;
+use Hekmatinasser\Verta\Facades\Verta;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,16 +29,24 @@ Route::get('/', function () {
 
 Route::get('/', function (Request $request) {
     $count = ($request->count) ? $request->count : 30;
+    $v = Verta::createTimestamp((int) $request->date);
     if ($request->filled('sys')) {
-        $sum = Phone::where('system', $request->sys)->count();
-        $phones =  Phone::where('system', $request->sys)->orderBy('id', 'desc')->take($count)->get();
-        $reports = Report::where('system', $request->sys)->orderBy('id', 'desc')->take($count)->get();
+        $sum = Phone::where('system', $request->sys)->whereDay('created_at', $v->toCarbon()->day)->count();
+        $phones =  Phone::where('system', $request->sys)->whereDay('created_at', $v->toCarbon()->day)->orderBy('id', 'desc')->take($count)->get();
+        $reports = Report::where('system', $request->sys)->whereDay('created_at', $v->toCarbon()->day)->orderBy('id', 'desc')->take($count)->get();
     } else {
-        $sum =  Phone::count();
-        $phones =  Phone::whereDate('created_at',  Carbon::today()->toDateString())->take($count)->get();;
-        $reports = Report::take($count)->get();
+        $sum =  Phone::whereDay('created_at', $v->toCarbon()->day)->count();
+        $phones =  Phone::whereDay('created_at', $v->toCarbon()->day)->take($count)->get();;
+        $reports = Report::whereDay('created_at', $v->toCarbon()->day)->take($count)->get();
     }
-    return view('phones', ['phones' => $phones, 'reports' => $reports, 'sum' => $sum, 'count' =>  $request->query('count'), 'sys' =>  $request->query('sys')]);
+    return view('phones', [
+        'phones' => $phones,
+        'reports' => $reports,
+        'sum' => $sum,
+        'count' =>  $request->query('count'),
+        'sys' =>  $request->query('sys'),
+        'date' => $request->query('date')
+    ]);
 });
 
 
