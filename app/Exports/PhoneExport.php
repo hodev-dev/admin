@@ -24,13 +24,12 @@ class PhoneExport implements WithMapping, WithHeadings, WithColumnFormatting, Fr
     {
         $this->sys = $sys;
         $this->count = $count;
-        $this->date = $date;
+        $this->date = Verta::createTimestamp((int) $date);
     }
 
     public function collection()
     {
-        $v = Verta::createTimestamp((int) $this->date);
-        return Phone::where('system', $this->sys)->whereDay('created_at', $v->toCarbon()->day)->orderBy('id', 'desc')->take($this->count)->get();
+        return Phone::where('system', $this->sys)->whereDay('created_at', $this->date->toCarbon()->day)->orderBy('id', 'desc')->take($this->count)->get();
     }
 
     public function headings(): array
