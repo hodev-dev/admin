@@ -51,5 +51,5 @@ Route::get('/', function (Request $request) {
 
 
 Route::get('/excel', function (Request $request) {
-    return Excel::download(new PhoneExport($request->sys, $request->count . $request->date), "اطلاعات مخاطبین و شماره ها.xlsx");
+    return Excel::download(new PhoneExport($request->sys, $request->count, $request->date), "اطلاعات مخاطبین و شماره ها.xlsx");
 });
