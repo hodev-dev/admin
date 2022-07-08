@@ -5,13 +5,14 @@ namespace App\Exports;
 use Carbon\Carbon;
 use App\Models\Phone;
 use PhpOffice\PhpSpreadsheet\Cell;
+use Hekmatinasser\Verta\Facades\Verta;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
-use Maatwebsite\Excel\Concerns\WithColumnWidths;
 
 class PhoneExport implements WithMapping, WithHeadings, WithColumnFormatting, FromCollection, WithColumnWidths
 {
@@ -19,15 +20,17 @@ class PhoneExport implements WithMapping, WithHeadings, WithColumnFormatting, Fr
      * @return \Illuminate\Support\Collection
      */
 
-    public function __construct($sys, $count)
+    public function __construct($sys, $count, $date)
     {
         $this->sys = $sys;
         $this->count = $count;
+        $this->date = $date;
     }
 
     public function collection()
     {
-        return Phone::where('system', $this->sys)->orderBy('id', 'desc')->take($this->count)->get();
+        $v = Verta::createTimestamp((int) $this->date);
+        return Phone::where('system', $this->sys)->whereDay('created_at', $v->toCarbon()->day)->orderBy('id', 'desc')->take($this->count)->get();
     }
 
     public function headings(): array
